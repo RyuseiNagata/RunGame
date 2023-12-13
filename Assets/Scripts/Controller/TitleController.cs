@@ -7,6 +7,7 @@ public class TitleController : MonoBehaviour
 {
     [SerializeField] Button startButton = null;
     [SerializeField] Button settingButton = null;
+    
 
     [SerializeField] GameObject[] volumeSlider = new GameObject[3];
     [SerializeField] GameObject startObject = null;
@@ -21,6 +22,7 @@ public class TitleController : MonoBehaviour
         GameSoundManager.Instance.PlayBGM(GameSoundManager.BGMType.Title);
         startButton.onClick.AddListener(OnClickStartButton);
         settingButton.onClick.AddListener(OnSettingStartButton);
+        
         for (int i = 0; i < volumeSlider.Length; i++)
         {
             volumeSlider[i].SetActive(false);
@@ -55,8 +57,6 @@ public class TitleController : MonoBehaviour
         }
     }
 
-
-
     IEnumerator StartButton()
     {
         GameSoundManager.Instance.PlaySE(GameSoundManager.SEType.Click);
@@ -67,5 +67,4 @@ public class TitleController : MonoBehaviour
         }
         SceneManager.LoadScene("StageSelect");
     }
-
 }

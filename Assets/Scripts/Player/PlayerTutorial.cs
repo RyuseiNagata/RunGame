@@ -8,7 +8,6 @@ public class PlayerTutorial : MonoBehaviour
 {
     Rigidbody2D rb2D = null;
 
-
     bool isJump = false;    // ジャンプしているか
     float jumpPower = 0;    // ジャンプ力
     int gravityChange = 0;  // 重力の変更
@@ -17,9 +16,6 @@ public class PlayerTutorial : MonoBehaviour
     {
         get { return gravityChange; }
     }
-
-
-    [SerializeField] Button button;
 
     // Start is called before the first frame update
     void Start()
@@ -42,13 +38,14 @@ public class PlayerTutorial : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             GameSoundManager.Instance.PlaySE(GameSoundManager.SEType.Jump);
-
+        
             rb2D.AddForce(transform.up * jumpPower, ForceMode2D.Impulse);
             isJump = true;
         }
 
 
 #elif UNITY_STANDALONE_WIN
+
         if (isJump == true) return;
         if (Input.GetKey(KeyCode.Space))
         {
@@ -58,22 +55,10 @@ public class PlayerTutorial : MonoBehaviour
             isJump = true;
         }
 
-#else
-        if (isJump == true) return;
-        Touch touch = Input.GetTouch(0);
-
-        if (Input.mousePosition.x <= Screen.width / 2)
-        {
-            // 左側をタップしたら
-            if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)
-            {
-                GameSoundManager.Instance.PlaySE(GameSoundManager.SEType.Jump);
-                rb2D.AddForce(transform.up * jumpPower, ForceMode2D.Impulse);
-                isJump = true;
-            }
-        }
 #endif
     }
+
+
 
 
     void GravitySwitch()
@@ -94,9 +79,9 @@ public class PlayerTutorial : MonoBehaviour
             }
         }
 
-
 #elif UNITY_STANDALONE_WIN
-    if (Input.GetKeyDown(KeyCode.Return))
+
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             GameSoundManager.Instance.PlaySE(GameSoundManager.SEType.GravitySwitch);
             gravityChange++;
@@ -109,28 +94,31 @@ public class PlayerTutorial : MonoBehaviour
                 rb2D.gravityScale = -1000.0f;
             }
         }
-
-#else
-        Touch touch = Input.GetTouch(0);
-
-        if (Input.mousePosition.x >= Screen.width / 2)
-        {
-            // 右側をタップしたら
-            if (touch.phase == TouchPhase.Began)
-            {
-                GameSoundManager.Instance.PlaySE(GameSoundManager.SEType.GravitySwitch);
-                gravityChange++;
-                if (gravityChange % 2 == 0)
-                {
-                    rb2D.gravityScale = 1000.0f;
-                }
-                else if (gravityChange % 2 == 1)
-                {
-                    rb2D.gravityScale = -1000.0f;
-                }
-            }
-        }
 #endif
+    }
+
+
+    public void AndroidJump()
+    {
+        if (isJump == true) return;
+        GameSoundManager.Instance.PlaySE(GameSoundManager.SEType.Jump);
+
+        rb2D.AddForce(transform.up * jumpPower, ForceMode2D.Impulse);
+        isJump = true;
+    }
+
+    public void AndroidGravitySwitch()
+    {
+        GameSoundManager.Instance.PlaySE(GameSoundManager.SEType.GravitySwitch);
+        gravityChange++;
+        if (gravityChange % 2 == 0)
+        {
+            rb2D.gravityScale = 1000.0f;
+        }
+        else if (gravityChange % 2 == 1)
+        {
+            rb2D.gravityScale = -1000.0f;
+        }
     }
 
 
